@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(15, 32, 65, 0.95), rgba(20, 48, 85, 0.95)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(0,200,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(0,200,255,0.1)"/></svg>');
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, #0f2041 0%, #1a3a52 50%, #0d47a1 100%);
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid rgba(0, 200, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #00eeff, 0 0 40px rgba(0, 200, 255, 0.5);
+            color: #00eeff;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        a {
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 200, 255, 0.5);
+        }
+
+        a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+            transition: left 0.35s;
+            z-index: -1;
+        }
+
+        a:hover {
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 0 12px 35px rgba(0, 200, 255, 0.8);
+        }
+
+        a:hover::before {
+            left: 0;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            padding: 50px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            margin-bottom: 40px;
+            color: #00eeff;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 238, 255, 0.5);
+        }
+
+        /* ===== METRICS DASHBOARD ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.2), rgba(0, 180, 148, 0.2));
+            border: 2px solid rgba(0, 255, 204, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.35s ease;
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.2);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 204, 0.9);
+            box-shadow: 0 15px 40px rgba(0, 255, 204, 0.4);
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.3), rgba(0, 180, 148, 0.3));
+        }
+
+        .metric-card .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+
+        .metric-card .label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .metric-card .subtext {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+        .action-section {
+            background: linear-gradient(135deg, rgba(15, 32, 65, 0.8), rgba(20, 48, 85, 0.8));
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #00ffcc 0%, #00b894 100%);
+            padding: 18px 32px;
+            font-size: 15px;
+            font-weight: 700;
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.6);
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 204, 0.9);
+            border-color: rgba(0, 255, 204, 0.9);
+        }
+
+        /* ===== INVENTORY TABLE SECTION ===== */
+        .table-section {
+            background: linear-gradient(135deg, rgba(15, 32, 65, 0.8), rgba(20, 48, 85, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            overflow-x: auto;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 200, 255, 0.3);
+        }
+
+        .table-header h3 {
+            color: #00eeff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+        }
+
+        .search-box {
+            background: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: #fff;
+            width: 250px;
+            font-size: 13px;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ===== TABLE STYLES ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        thead {
+            background: rgba(0, 200, 255, 0.15);
+            border-bottom: 2px solid rgba(0, 200, 255, 0.5);
+        }
+
+        th {
+            color: #00eeff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 200, 255, 0.1);
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+        }
+
+        /* ===== STOCK STATUS BADGES ===== */
+        .stock-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stock-high {
+            background: rgba(0, 255, 100, 0.3);
+            color: #00ff64;
+            border: 1px solid #00ff64;
+        }
+
+        .stock-medium {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .stock-low {
+            background: rgba(255, 87, 34, 0.3);
+            color: #ff5722;
+            border: 1px solid #ff5722;
+        }
+
+        /* ===== CATEGORY CARDS ===== */
+        .category-section {
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .category-link {
+            text-decoration: none;
+            display: block;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, rgba(45, 100, 180, 0.9), rgba(30, 60, 114, 0.9));
+            border: 2px solid rgba(0, 238, 255, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 238, 255, 0.9);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.6);
+        }
+
+        .category-card .icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            color: #00eeff;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .category-card .count {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #00ffcc;
+            margin: 10px 0;
+        }
+
+        .category-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        /* ===== SLIDESHOW SECTION ===== */
+        .slideshow-section {
+            background: linear-gradient(135deg, rgba(15, 32, 65, 0.8), rgba(20, 48, 85, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.4);
+            border: 2px solid rgba(0, 200, 255, 0.5);
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: rgba(15, 32, 65, 0.95);
+        }
+
+        /* Arrow Buttons */
+        .arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 200, 255, 0.7);
+            color: #fff;
+            border: 2px solid rgba(0, 200, 255, 0.9);
+            padding: 15px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 10;
+            font-weight: bold;
+        }
+
+        .arrow-btn:hover {
+            background: rgba(0, 238, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 238, 255, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .arrow-left {
+            left: 20px;
+        }
+
+        .arrow-right {
+            right: 20px;
+        }
+
+        .dots-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 200, 255, 0.3);
+            margin: 0 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+        }
+
+        .dot.active {
+            background: #00eeff;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(0, 238, 255, 0.8);
+        }
+
+        .dot:hover {
+            background: rgba(0, 200, 255, 0.6);
+        }
+
+        /* ===== MAP SECTION ===== */
+        .map-section {
+            background: linear-gradient(135deg, rgba(15, 32, 65, 0.8), rgba(20, 48, 85, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .map-iframe {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.4);
+            border: 2px solid rgba(0, 200, 255, 0.5);
+        }
+
+        .map-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 200, 255, 0.08);
+            border-left: 4px solid #00eeff;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.15), rgba(15, 32, 65, 0.15));
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .contact-item {
+            padding: 20px;
+            background: rgba(0, 200, 255, 0.08);
+            border-left: 4px solid #00eeff;
+            border-radius: 8px;
+            transition: all 0.35s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 200, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .contact-item h3 {
+            color: #00eeff;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .contact-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .contact-item a {
+            color: #00c6ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* ===== SOCIAL SECTION ===== */
+        .social-section {
+            padding-top: 30px;
+            border-top: 2px solid rgba(0, 200, 255, 0.3);
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .social-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.35s ease;
+            border: 2px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            transition: left 0.35s;
+            z-index: 0;
+        }
+
+        .social-icon .icon-text,
+        .social-icon .label {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .social-icon .icon-text {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .social-icon .label {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Facebook */
+        .social-icon.facebook {
+            background: rgba(59, 89, 152, 0.2);
+            border-color: #3b5998;
+            color: #3b5998;
+        }
+
+        .social-icon.facebook::before {
+            background: #3b5998;
+        }
+
+        .social-icon.facebook:hover {
+            color: #fff;
+            border-color: #3b5998;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(59, 89, 152, 0.6);
+        }
+
+        .social-icon.facebook:hover::before {
+            left: 0;
+        }
+
+        /* Telegram */
+        .social-icon.telegram {
+            background: rgba(0, 136, 204, 0.2);
+            border-color: #0088cc;
+            color: #0088cc;
+        }
+
+        .social-icon.telegram::before {
+            background: #0088cc;
+        }
+
+        .social-icon.telegram:hover {
+            color: #fff;
+            border-color: #0088cc;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.6);
+        }
+
+        .social-icon.telegram:hover::before {
+            left: 0;
+        }
+
+        /* Viber */
+        .social-icon.viber {
+            background: rgba(126, 53, 147, 0.2);
+            border-color: #7e3593;
+            color: #7e3593;
+        }
+
+        .social-icon.viber::before {
+            background: #7e3593;
+        }
+
+        .social-icon.viber:hover {
+            color: #fff;
+            border-color: #7e3593;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(126, 53, 147, 0.6);
+        }
+
+        .social-icon.viber:hover::before {
+            left: 0;
+        }
+
+        /* YouTube */
+        .social-icon.youtube {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .social-icon.youtube::before {
+            background: #ff0000;
+        }
+
+        .social-icon.youtube:hover {
+            color: #fff;
+            border-color: #ff0000;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.6);
+        }
+
+        .social-icon.youtube:hover::before {
+            left: 0;
+        }
+
+        /* Instagram */
+        .social-icon.instagram {
+            background: rgba(193, 53, 132, 0.2);
+            border-color: #c13584;
+            color: #c13584;
+        }
+
+        .social-icon.instagram::before {
+            background: #c13584;
+        }
+
+        .social-icon.instagram:hover {
+            color: #fff;
+            border-color: #c13584;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(193, 53, 132, 0.6);
+        }
+
+        .social-icon.instagram:hover::before {
+            left: 0;
+        }
+
+        /* Footer Social Links */
+        .footer-social {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            font-size: 24px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+            border: none;
+        }
+
+        .footer-social a:hover {
+            transform: scale(1.3) translateY(-5px);
+            box-shadow: none;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .metrics-grid,
+            .category-grid,
+            .action-buttons,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-section {
+                overflow-x: auto;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .slideshow-container,
+            .map-iframe {
+                height: 350px;
+            }
+
+            .map-section,
+            .slideshow-section {
+                padding: 20px;
+            }
+
+            .contact-section {
+                padding: 25px;
+            }
+
+            .social-links {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 15px;
+            }
+
+            .social-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .social-icon .icon-text {
+                font-size: 32px;
+            }
+
+            .social-icon .label {
+                font-size: 12px;
+            }
+
+            .arrow-btn {
+                padding: 10px 15px;
+                font-size: 18px;
+            }
+
+            .arrow-left {
+                left: 10px;
+            }
+
+            .arrow-right {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <h1>📦 TECHNOVA INVENTORY SYSTEM</h1>
+        </div>
+        <div class="header-links">
+            <a href="login.php">🔓 Log In</a>
+            <a href="signup.php">✍️ Sign Up</a>
+        </div>
+    </header>
+
+   
+        <!-- ACTION BUTTONS -->
+        <div class="action-section">
+            <h2 class="section-title" style="margin-bottom: 25px;">Quick Actions</h2>
+            <div class="action-buttons">
+                <a href="index.php" class="action-btn"> View All Products</a>
+                <a href="purchase.php" class="action-btn"> Add Purchase</a>
+                <a href="sales.php" class="action-btn">Add Sale</a>
+                <a href="purchase_list.php" class="action-btn"> View Purchases</a>
+                <a href="sales_list.php" class="action-btn">View Sales</a>
+            </div>
+        </div>
+
+       
+        <!-- INVENTORY BY CATEGORY -->
+        <h2 class="section-title">Inventory by Category</h2>
+        <div class="category-section">
+            <div class="category-grid">
+                <a href="electronics.html" class="category-link">
+                    <div class="category-card">
+                        <div class="icon">💻</div>
+                        <h3>Electronics</h3>
+                        <div class="count">425</div>
+                        <p>Computers & Devices</p>
+                    </div>
+                </a>
+                <a href="accessories.html" class="category-link">
+                    <div class="category-card">
+                        <div class="icon">⌨️</div>
+                        <h3>Accessories</h3>
+                        <div class="count">532</div>
+                        <p>Peripherals & Add-ons</p>
+                    </div>
+                </a>
+                <a href="consumables.html" class="category-link">
+                    <div class="category-card">
+                        <div class="icon">📦</div>
+                        <h3>Consumables</h3>
+                        <div class="count">187</div>
+                        <p>Papers, Ink, etc</p>
+                    </div>
+                </a>
+                <a href="network-equipment.html" class="category-link">
+                    <div class="category-card">
+                        <div class="icon">🔌</div>
+                        <h3>Network Equipment</h3>
+                        <div class="count">106</div>
+                        <p>Routers & Cables</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- SLIDESHOW SECTION -->
+        <h2 class="section-title">Our Gallery</h2>
+        <div class="slideshow-section">
+            <div class="slideshow-container" id="slideshow">
+               
+                <!-- Slides -->
+                <div class="slide active">
+                    <img src="images/anil1.jpg" alt="Photo 1">
+                </div>
+                <div class="slide">
+                    <img src="images/anil2.jpg" alt="Photo 2">
+                </div>
+                <div class="slide">
+                    <img src="images/anil3.jpg" alt="Photo 3">
+                </div>
+                <div class="slide">
+                    <img src="images/anil4.jpg" alt="Photo 4">
+                </div>
+                <div class="slide">
+                    <img src="images/inventory.jpg" alt="Photo 5">
+                </div>
+                 <div class="slide">
+                    <img src="images/anil.png" alt="Photo 5">
+                </div>
+              
+              
+            </div>
+            
+            <!-- Dots -->
+            <div class="dots-container">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+            </div>
+        </div>
+
+        <!-- MAP SECTION -->
+        <h2 class="section-title">Our Location</h2>
+        <div class="map-section">
+            <iframe 
+                class="map-iframe"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3539.3587819347137!2d81.6159916!3d28.047363599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39986c7f0e0e0e0d%3A0xc7f0e0e0e0e0e0e0!2sBanke%20Bageshwori%20Campus!5e0!3m2!1sen!2snp!4v1707115200000" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <div class="map-info">
+                <strong> Banke Bageshwori Campus, Nepalgunj</strong><br>
+                Ratna Rajmarg, Nepalgunj 21900, Nepal<br>
+                Hours: 6:00 AM - 3:00 PM (Monday to Friday)
+            </div>
+        </div>
+
+        <!-- CONTACT & SOCIAL SECTION -->
+        <h2 class="section-title">Contact Us & Connect With Us</h2>
+        <div class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h3> Location</h3>
+                    <p>Nepalgunj - 10 Banke</p>
+                    <p>Ratna Rajmarg, Nepal</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📞 Phone</h3>
+                    <p><a href="phone:9822158975">9822158975</a></p>
+                    <p>9:00 AM - 5:00 PM</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📧 Email</h3>
+                    <p><a>email&#160;protected</span></a></p>
+                    <p>Quick Response Team</p>
+                </div>
+            </div>
+
+            <div class="social-section">
+                <h3 style="color: #00eeff; margin-bottom: 25px; text-align: center; font-size: 20px;">Follow Us on Social Media</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com" class="social-icon facebook" target="_blank">
+                        <span class="icon-text">f</span>
+                        <span class="label">Facebook</span>
+                    </a>
+                    <a href="https://t.me" class="social-icon telegram" target="_blank">
+                        <span class="icon-text">📱</span>
+                        <span class="label">Telegram</span>
+                    </a>
+                    <a href="viber://contact?number=9818123456" class="social-icon viber" target="_blank">
+                        <span class="icon-text">V</span>
+                        <span class="label">Viber</span>
+                    </a>
+                    <a href="https://www.youtube.com" class="social-icon youtube" target="_blank">
+                        <span class="icon-text">▶</span>
+                        <span class="label">YouTube</span>
+                    </a>
+                    <a href="https://www.instagram.com" class="social-icon instagram" target="_blank">
+                        <span class="icon-text">📷</span>
+                        <span class="label">Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background: linear-gradient(135deg, #0f2041, #1a3a52); padding: 30px 40px; text-align: center; border-top: 1px solid rgba(0, 200, 255, 0.3); color: rgba(255, 255, 255, 0.7); font-size: 13px;">
+        <p><strong>Inventory Management System</strong> - Efficient Stock Management</p>
+        <p>© 2024 All Rights Reserved | Version 1.0</p>
+        <div class="footer-social">
+            <a href="https://www.facebook.com" target="_blank">📘</a>
+            <a href="https://t.me" target="_blank">✈️</a>
+            <a href="viber://contact?number=9818123456" target="_blank">📱</a>
+        </div>
+    </footer>
+
+    <!-- SLIDESHOW JAVASCRIPT -->
+   <script>
+let slideIndex = 0;
+let slideTimer;
+
+function showSlide(n) {
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    if (n >= slides.length) slideIndex = 0;
+    if (n < 0) slideIndex = slides.length - 1;
+
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+
+    slides[slideIndex].classList.add("active");
+    dots[slideIndex].classList.add("active");
+}
+
+function nextSlide(n = 1) {
+    clearTimeout(slideTimer);
+    slideIndex += n;
+    showSlide(slideIndex);
+    slideTimer = setTimeout(() => nextSlide(), 4000);
+}
+
+function currentSlide(n) {
+    clearTimeout(slideTimer);
+    slideIndex = n;
+    showSlide(slideIndex);
+    slideTimer = setTimeout(() => nextSlide(), 4000);
+}
+
+window.onload = () => nextSlide(0);
+</script>
+    
+</body>
+</html>

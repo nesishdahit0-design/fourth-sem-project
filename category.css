@@ -1,0 +1,147 @@
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(15, 32, 65, 0.95), rgba(20, 48, 85, 0.95)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(0,200,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(0,200,255,0.1)"/></svg>');
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f2041 0%, #1a3a52 50%, #0d47a1 100%);
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid rgba(0, 200, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px #00eeff;
+            color: #00eeff;
+        }
+
+        .back-btn {
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+            transition: all 0.35s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 200, 255, 0.8);
+        }
+
+        .container {
+            padding: 50px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #00eeff;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 238, 255, 0.5);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(15, 32, 65, 0.9), rgba(20, 48, 85, 0.9));
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 200, 255, 0.8);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(0, 200, 255, 0.2);
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00eeff;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: #00ffcc;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00ffcc 0%, #00b894 100%);
+            color: #0f2041;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 255, 204, 0.4);
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
